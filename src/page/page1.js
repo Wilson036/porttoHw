@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { fromEvent } from 'rxjs';
+import { Link, useLocation } from 'react-router-dom';
+import { from, fromEvent, of } from 'rxjs';
+import { mergeMap, finalize, catchError } from 'rxjs/operators';
 import styled from 'styled-components';
 
 const StyledUl = styled.ul`
@@ -50,6 +51,8 @@ export default function Page1() {
   const [data, setData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [isbottom, setBottom] = useState(false);
+  const { pathname } = useLocation();
+
   const url = useMemo(
     () =>
       `https://api.opensea.io/api/v1/assets?format=json&owner=0x960DE9907A2e2f5363646d48D7FB675Cd2892e91&offset=${offset}&limit=20`,
@@ -57,7 +60,7 @@ export default function Page1() {
   );
 
   useEffect(() => {
-    const scroll$ = fromEvent(window, 'scroll').subscribe((value) => {
+    const scroll$ = fromEvent(window, 'scroll').subscribe(() => {
       const bottom =
         Math.ceil(window.innerHeight + window.scrollY) >=
         document.documentElement.scrollHeight;
@@ -72,56 +75,46 @@ export default function Page1() {
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
     if (isbottom) {
       setOffset(offset + 20);
     }
   }, [isbottom]);
 
   useEffect(() => {
-    fetch(url, { method: 'GET' })
-      .then((res) => res.json())
-      .then((json) =>
-        json.assets.map(
-          ({
-            token_id,
-            image_url,
-            name,
-            collection,
-            description,
-            permalink,
-          }) => ({
-            token_id,
-            image_url,
-            name,
-            collection,
-            description,
-            permalink,
-          })
-        )
+    const fetchData$ = from(fetch(url))
+      .pipe(
+        mergeMap((response) => response.json()),
+        catchError(() => of('ERROR')),
+        finalize(() => setBottom(false))
       )
-      .then((jsonData) => {
-        setData(data.concat(jsonData));
-      })
-      .catch((err) => {
-        console.error({ err });
-      })
-      .finally(() => {
-        setBottom(false);
+      .subscribe(({ assets }) => {
+        setData(data.concat(assets));
       });
+    return () => fetchData$.unsubscribe();
   }, [url]);
 
   return (
     <StyledUl>
-      {data.map(
-        ({ token_id, image_url, name, collection, description, permalink }) => (
-          <li>
-            <Link to={{ pathname: '/page2', state: { token_id, permalink } }}>
-              <img src={image_url} alt={description} />
-            </Link>
-            <p>{name}</p>
-          </li>
-        )
-      )}
+      {data.map(({ id, token_id, image_url, name, asset_contract }) => (
+        <li key={id}>
+          <Link
+            to={{
+              pathname: '/page2',
+              state: {
+                token_id,
+                asset_contract,
+              },
+            }}
+          >
+            <img src={image_url} alt={name} />
+          </Link>
+          <p>{name}</p>
+        </li>
+      ))}
     </StyledUl>
   );
 }

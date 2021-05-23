@@ -50,14 +50,6 @@ export default function LayoutComponent({ children }) {
             <span>portto</span>
           </h1>
         </Logo>
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">
-            <Link to="/page1">page 1</Link>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <Link to="/page2">page 2</Link>
-          </Menu.Item>
-        </Menu>
       </StyledHeader>
       <StyledContent>
         <div>{children}</div>
