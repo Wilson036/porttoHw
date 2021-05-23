@@ -4,7 +4,6 @@ import { catchError, mergeMap } from 'rxjs/operators';
 import { LeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 const StyledDiv = styled.div`
   display: flex;
@@ -73,7 +72,7 @@ const StyledIcon = styled(LeftOutlined)`
     font-size: 20px;
   }
 `;
-export default function Page2(props) {
+export default function Detail(props) {
   const { token_id, asset_contract } = props.location.state;
 
   const [data, setData] = useState({
@@ -85,7 +84,7 @@ export default function Page2(props) {
   });
 
   const back = () => {
-    props.history.push('/page1');
+    props.history.push('/list');
   };
 
   useEffect(() => {

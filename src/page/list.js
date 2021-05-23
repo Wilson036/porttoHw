@@ -47,7 +47,7 @@ const StyledUl = styled.ul`
   }
 `;
 
-export default function Page1() {
+export default function List() {
   const [data, setData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [isbottom, setBottom] = useState(false);
@@ -103,7 +103,7 @@ export default function Page1() {
         <li key={id}>
           <Link
             to={{
-              pathname: '/page2',
+              pathname: `/detail/${token_id}`,
               state: {
                 token_id,
                 asset_contract,

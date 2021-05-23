@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const { Header, Content, Footer } = Layout;
 
@@ -39,17 +39,19 @@ export default function LayoutComponent({ children }) {
   return (
     <Layout className="layout">
       <StyledHeader>
-        <Logo>
-          <img
-            alt="portto logo"
-            src="https://s3cdn.yourator.co/companies/logos/000/001/082/thumb/b8b65d3cd5f4965d558d4542af25b97e9d3d1db6.png"
-            width="61"
-            height="61"
-          />
-          <h1>
-            <span>portto</span>
-          </h1>
-        </Logo>
+        <Link to="/list">
+          <Logo>
+            <img
+              alt="portto logo"
+              src="https://s3cdn.yourator.co/companies/logos/000/001/082/thumb/b8b65d3cd5f4965d558d4542af25b97e9d3d1db6.png"
+              width="61"
+              height="61"
+            />
+            <h1>
+              <span>portto</span>
+            </h1>
+          </Logo>
+        </Link>
       </StyledHeader>
       <StyledContent>
         <div>{children}</div>
