@@ -31,6 +31,10 @@ const StyledContent = styled(Content)`
   }
 `;
 
+const StyledFooter = styled(Footer)`
+  text-align: center;
+`;
+
 export default function LayoutComponent({ children }) {
   return (
     <Layout className="layout">
@@ -58,9 +62,7 @@ export default function LayoutComponent({ children }) {
       <StyledContent>
         <div>{children}</div>
       </StyledContent>
-      <Footer style={{ textAlign: 'center' }}>
-        Ant Design ©2018 Created by Ant UED
-      </Footer>
+      <StyledFooter>Ant Design ©2018 Created by Ant UED</StyledFooter>
     </Layout>
   );
 }
