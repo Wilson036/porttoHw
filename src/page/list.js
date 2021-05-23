@@ -55,7 +55,7 @@ export default function List() {
 
   const url = useMemo(
     () =>
-      `https://api.opensea.io/api/v1/assets?format=json&owner=0x960DE9907A2e2f5363646d48D7FB675Cd2892e91&offset=${offset}&limit=20`,
+      `https://api.opensea.io/api/v1/assets?format=json&owner=${process.env.REACT_APP_ADDRESS}&offset=${offset}&limit=20`,
     [offset]
   );
 
@@ -103,7 +103,7 @@ export default function List() {
         <li key={id}>
           <Link
             to={{
-              pathname: `/detail/${token_id}`,
+              pathname: `/detail${token_id}`,
               state: {
                 token_id,
                 asset_contract,

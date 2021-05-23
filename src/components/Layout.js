@@ -43,7 +43,7 @@ export default function LayoutComponent({ children }) {
           <Logo>
             <img
               alt="portto logo"
-              src="https://s3cdn.yourator.co/companies/logos/000/001/082/thumb/b8b65d3cd5f4965d558d4542af25b97e9d3d1db6.png"
+              src={process.env.REACT_APP_LOGO}
               width="61"
               height="61"
             />
